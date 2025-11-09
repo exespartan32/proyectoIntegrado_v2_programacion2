@@ -175,7 +175,7 @@ public class ProfesorServiceImplement implements UsuarioInterface<Profesor> {
                 if (rs.getString("fechaEliminacion") != null) {
                     fechaEliminacion = LocalDate.parse(rs.getString("fechaEliminacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
                 }
-                while (rs.next()) {
+                if (rs.next()) {
                     boolean presentismo = false;
                     if (rs.getInt("presentismo") == 1) {
                         presentismo = true;

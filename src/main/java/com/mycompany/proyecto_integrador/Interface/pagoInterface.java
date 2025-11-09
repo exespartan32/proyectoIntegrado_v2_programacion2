@@ -22,6 +22,8 @@ public interface pagoInterface {
     public ArrayList<Pago> buscarPago(String DNIAlumno);
 
     public int verSaldoAlumno(String DNIAlumno);
+    
+    public Pago buscarPago(String nombreCurso, String dniAlumno);
 
     public ArrayList<Pago> buscarPago(String nombreCurso, int estado);
 

@@ -157,35 +157,40 @@ public class AlumnoServiceImplement implements UsuarioInterface<Alumno> {
             try ( PreparedStatement psAlumno = connectC.prepareStatement(sqlAlumno)) {
                 psAlumno.setString(1, data);
                 ResultSet rs = psAlumno.executeQuery();
-                LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
-                LocalDate fechaModificacion = null;
-                if (rs.getString("fechaModificacion") != null) {
-                    fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                if (rs.next()) {
+                    LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                    LocalDate fechaModificacion = null;
+                    if (rs.getString("fechaModificacion") != null) {
+                        fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                    }
+                    LocalDate fechaEliminacion = null;
+                    if (rs.getString("fechaEliminacion") != null) {
+                        fechaEliminacion = LocalDate.parse(rs.getString("fechaEliminacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                    }
+                    alumno = new Alumno(
+                            rs.getString("nivelEducativo"),
+                            rs.getString("fechaInscripcion"),
+                            null,
+                            null,
+                            null,
+                            rs.getString("nombre"),
+                            rs.getString("apellido"),
+                            rs.getString("DNI"),
+                            rs.getInt("edad"),
+                            rs.getString("direccion"),
+                            rs.getString("localidad"),
+                            rs.getString("ciudad"),
+                            rs.getString("provincia"),
+                            rs.getString("numeroTelefono"),
+                            fechaCreacion,
+                            fechaModificacion,
+                            fechaEliminacion,
+                            TipoPersona.ALUMNO
+                    );
+                } else {
+                    System.out.println("no se encontro ningun alumno con Dni " + data);
                 }
-                LocalDate fechaEliminacion = null;
-                if (rs.getString("fechaEliminacion") != null) {
-                    fechaEliminacion = LocalDate.parse(rs.getString("fechaEliminacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
-                }
-                alumno = new Alumno(
-                        rs.getString("nivelEducativo"),
-                        rs.getString("fechaInscripcion"),
-                        null,
-                        null,
-                        null,
-                        rs.getString("nombre"),
-                        rs.getString("apellido"),
-                        rs.getString("DNI"),
-                        rs.getInt("edad"),
-                        rs.getString("direccion"),
-                        rs.getString("localidad"),
-                        rs.getString("ciudad"),
-                        rs.getString("provincia"),
-                        rs.getString("numeroTelefono"),
-                        fechaCreacion,
-                        fechaModificacion,
-                        fechaEliminacion,
-                        TipoPersona.ALUMNO
-                );
+
             }
         } catch (SQLException ex) {
             System.out.println("error al mostrar el elumno");

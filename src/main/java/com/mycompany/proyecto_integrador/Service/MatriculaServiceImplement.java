@@ -30,7 +30,7 @@ public class MatriculaServiceImplement implements MatriculaInterface {
     AlumnoServiceImplement alumnoServiceImplement = new AlumnoServiceImplement();
 
     @Override
-    public void matricularAlumno(String DNIAlumno, String nombreCurso) {
+    public void matricularAlumno(Alumno alumno, Curso curso) {
         try ( Connection connectC = conn.conectarDB()) {
             String sql = "INSERT INTO Matricula (DNIAlumno, fechaCreacion, nombreCurso)  VALUES (?,?,?)";
             habilitarClavesForaneas(connectC);
@@ -38,11 +38,11 @@ public class MatriculaServiceImplement implements MatriculaInterface {
 
             try {
                 PreparedStatement ps = connectC.prepareStatement(sql);
-                ps.setString(1, DNIAlumno);
+                ps.setString(1, alumno.getDni());
                 DateTimeFormatter formatterEs = DateTimeFormatter.ofPattern("dd/MM/yy");
                 String fechaString = LocalDate.now().format(formatterEs);
                 ps.setString(2, fechaString);
-                ps.setString(3, nombreCurso);
+                ps.setString(3, curso.getNombreCurso());
 
                 ps.execute();
                 connectC.commit();
@@ -59,13 +59,13 @@ public class MatriculaServiceImplement implements MatriculaInterface {
     }
 
     @Override
-    public void desvincularAlumno(String DNIAlumno, String nombreCurso) {
+    public void desvincularAlumno(Alumno alumno, Curso curso) {
         String sql = "DELETE FROM Matricula WHERE DNIAlumno = ? AND nombreCurso = ?";
         Connection connect = conn.conectarDB();
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
-            ps.setString(1, DNIAlumno);
-            ps.setString(2, nombreCurso);
+            ps.setString(1, alumno.getDni());
+            ps.setString(2, curso.getNombreCurso());
             habilitarClavesForaneas(connect);
             int filasAfectadas = ps.executeUpdate();
             if (filasAfectadas > 0) {

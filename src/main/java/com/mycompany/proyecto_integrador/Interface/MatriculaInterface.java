@@ -14,9 +14,9 @@ import java.util.ArrayList;
  */
 public interface MatriculaInterface {
 
-    public void matricularAlumno(String DNIAlumno, String nombreCurso);
+    public void matricularAlumno(Alumno alumno, Curso curso);
 
-    public void desvincularAlumno(String DNIAlumno, String nombreCurso);
+    public void desvincularAlumno(Alumno alumno, Curso curso);
 
     public ArrayList<Matricula> buscarMatriculaCurso();
 

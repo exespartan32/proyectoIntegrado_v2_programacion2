@@ -21,8 +21,7 @@ public class Proyecto_integrador {
         LoginView loginView = new LoginView();
         MainMenu mainMenu = new MainMenu();
         //loginView.createUser();
-        //loginView.showLoginMenu();
-        mainMenu.mostrarMenuPrincipal();
-
+        loginView.showLoginMenu();
+        //mainMenu.mostrarMenuPrincipal();
     }
 }

@@ -183,4 +183,9 @@ public class Persona {
                 + "\n | edad = " + edad;
     }
 
+    public String MostrarDatosPago() {
+        return " | nombre = " + nombre
+                + "\n | apellido = " + apellido;
+    }
+
 }

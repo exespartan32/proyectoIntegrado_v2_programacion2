@@ -62,4 +62,8 @@ public class Alumno extends Usuario {
                 + "\n | fechaInscripcion = " + fechaInscripcion + '}';
     }
 
+    public String mostrardatosPago() {
+        return super.MostrarDatosPago();
+    }
+
 }

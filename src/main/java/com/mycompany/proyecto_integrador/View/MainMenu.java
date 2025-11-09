@@ -5,6 +5,7 @@
 package com.mycompany.proyecto_integrador.View;
 
 import com.mycompany.proyecto_integrador.Controller.*;
+import com.mycompany.proyecto_integrador.Utils.Validaciones;
 import java.util.Scanner;
 
 /**
@@ -12,20 +13,18 @@ import java.util.Scanner;
  * @author exequiel
  */
 public class MainMenu {
-    // 1. Instanciamos todos los controladores
 
+    // 1. Instanciamos todos los controladores
     private final Alumno_Controller alumnoController = new Alumno_Controller();
     private final Profesor_Controller profesorController = new Profesor_Controller();
     private final Curso_Controller cursoController = new Curso_Controller();
-//    private final HistorialCuenta_Controller historialController = new HistorialCuenta_Controller();
-//    private final Matricula_Controller matriculaController = new Matricula_Controller();
-//    private final Usuario_Controller usuarioController = new Usuario_Controller();
-//    private final ValorCurso_Controller valorCursoController = new ValorCurso_Controller();
+    private final Matricula_Controller matriculaController = new Matricula_Controller();
+    private final PagoController pagoController = new PagoController();
     private final Scanner scanner = new Scanner(System.in);
 
     public void mostrarMenuPrincipal() {
-        int opcion = -1;
 
+        int opcion = -1;
         while (opcion != 0) {
             System.out.println("\n========================================");
             System.out.println("   SISTEMA DE GESTIÓN ACADÉMICA");
@@ -40,12 +39,11 @@ public class MainMenu {
             System.out.print("Seleccione una opción: ");
 
             try {
-                // Usamos nextLine() y parseamos para evitar problemas con el buffer del scanner
                 opcion = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
                 System.out.println("Error: Ingrese un número válido.");
-                opcion = -1; // Resetea la opción para que el bucle continúe
-                continue; // Vuelve al inicio del bucle
+                opcion = -1;
+                continue;
             }
 
             switch (opcion) {
@@ -71,7 +69,7 @@ public class MainMenu {
                     System.out.println("Opción no válida. Intente de nuevo.");
             }
         }
-        scanner.close(); // Cierra el scanner al salir de la aplicación
+        scanner.close();
     }
 
     private void menuAlumnos() {
@@ -109,6 +107,9 @@ public class MainMenu {
                     break;
                 case 5:
                     alumnoController.eliminarAlumno();
+                    break;
+                case 0:
+                    System.out.println("Volviendo al menú principal...");
                     break;
                 default:
                     System.out.println("Opción no válida. Intente de nuevo.");
@@ -150,6 +151,9 @@ public class MainMenu {
                     break;
                 case 5:
                     profesorController.eliminarProfesor();
+                    break;
+                case 0:
+                    System.out.println("Volviendo al menú principal...");
                     break;
                 default:
                     System.out.println("Opción no válida. Intente de nuevo.");
@@ -196,6 +200,9 @@ public class MainMenu {
                 case 6:
                     cursoController.eliminarCurso();
                     break;
+                case 0:
+                    System.out.println("Volviendo al menú principal...");
+                    break;
                 default:
                     System.out.println("Opción no válida. Intente de nuevo.");
             }
@@ -207,9 +214,9 @@ public class MainMenu {
         while (opcion != 0) {
             System.out.println("\n--- GESTIÓN DE MATRÍCULAS ---");
             System.out.println("1. Matricular Alumno en Curso");
-            System.out.println("2. Buscar Matrículas de un Alumno");
-            System.out.println("3. Buscar Matrículas de un Curso");
-            System.out.println("4. Ver Todas las Matrículas");
+            System.out.println("2. Ver Todas las Matrículas");
+            System.out.println("3. Buscar Matrículas de un Alumno");
+            System.out.println("4. Buscar Matrículas de un Curso");
             System.out.println("5. Dar de Baja Alumno de un Curso");
             System.out.println("0. Volver al Menú Principal");
             System.out.print("Seleccione una opción: ");
@@ -223,22 +230,22 @@ public class MainMenu {
             }
             switch (opcion) {
                 case 1:
-                    cursoController.nuevoCurso();
+                    matriculaController.matricularAlumnoEnCurso();
                     break;
                 case 2:
-                    cursoController.verTodosLosCursos();
+                    matriculaController.verTodasLasMatriculas();
                     break;
                 case 3:
-                    cursoController.buscarCursoPorNombre();
+                    matriculaController.verMatriculaAlumno();
                     break;
                 case 4:
-                    cursoController.buscarCursoPorProfesor();
+                    matriculaController.verMatriculaCurso();
                     break;
                 case 5:
-                    cursoController.modificarCurso();
+                    matriculaController.darDeBajaAlumno();
                     break;
-                case 6:
-                    cursoController.eliminarCurso();
+                case 0:
+                    System.out.println("Volviendo al menú principal...");
                     break;
                 default:
                     System.out.println("Opción no válida. Intente de nuevo.");
@@ -264,6 +271,29 @@ public class MainMenu {
                 System.out.println("Error: Ingrese un número válido.");
                 opcion = -1;
                 continue;
+            }
+            switch (opcion) {
+                case 1:
+                    pagoController.pagarCurso();
+                    ;
+                    break;
+                case 2:
+                    pagoController.verTodoslosPagos();
+                    break;
+                case 3:
+                    pagoController.verPagosDeUnAlumno();
+                    break;
+                case 4:
+                    pagoController.verPagosDeUnCurso();
+                    break;
+                case 5:
+                    pagoController.verPagosPorId();
+                    break;
+                case 0:
+                    System.out.println("Volviendo al menú principal...");
+                    break;
+                default:
+                    System.out.println("Opción no válida. Intente de nuevo.");
             }
         }
     }

@@ -67,7 +67,6 @@ public class Alumno_Controller {
     }
 
     public void mostrarTodosLosAlumnos() {
-        System.out.println("mostrar todo slos alumnos en sel sistema");
         ArrayList<Alumno> listaAlumnos = alumnoServiceImplement.mostrarRegistro();
         System.out.println("listaAlumnos " + listaAlumnos.size());
         if (listaAlumnos.size() > 0) {
@@ -92,7 +91,13 @@ public class Alumno_Controller {
             System.out.print("ingrese el dni del alumno que quiere buscar: ");
             String dni = sc.nextLine();
             Alumno alumno = alumnoServiceImplement.mostrarRegistro(dni, 0);
-            System.out.println(alumno.mostrarDatos());
+            if (alumno.getDni() != null) {
+                System.out.println(alumno.mostrarDatos());
+            } else {
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("           no se encontro un alumno con dni " + dni);
+                System.out.println("------------------------------------------------------------------");
+            }
         } else {
             System.out.println("------------------------------------------------------------------");
             System.out.println("                     no hay alumnos que mostrar                   ");
