@@ -1,0 +1,228 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.proyecto_integrador.Service;
+
+import com.mycompany.proyecto_integrador.Configuration.ConexionDB;
+import com.mycompany.proyecto_integrador.Interface.MatriculaInterface;
+import com.mycompany.proyecto_integrador.Model.Alumno;
+import com.mycompany.proyecto_integrador.Model.Curso;
+import com.mycompany.proyecto_integrador.Model.Matricula;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author exequiel
+ */
+public class MatriculaServiceImplement implements MatriculaInterface {
+
+    ConexionDB conn = new ConexionDB();
+    CursoServiceImplement cursoServiceImplement = new CursoServiceImplement();
+    AlumnoServiceImplement alumnoServiceImplement = new AlumnoServiceImplement();
+
+    @Override
+    public void matricularAlumno(String DNIAlumno, String nombreCurso) {
+        try ( Connection connectC = conn.conectarDB()) {
+            String sql = "INSERT INTO Matricula (DNIAlumno, fechaCreacion, nombreCurso)  VALUES (?,?,?)";
+            habilitarClavesForaneas(connectC);
+            connectC.setAutoCommit(false);
+
+            try {
+                PreparedStatement ps = connectC.prepareStatement(sql);
+                ps.setString(1, DNIAlumno);
+                DateTimeFormatter formatterEs = DateTimeFormatter.ofPattern("dd/MM/yy");
+                String fechaString = LocalDate.now().format(formatterEs);
+                ps.setString(2, fechaString);
+                ps.setString(3, nombreCurso);
+
+                ps.execute();
+                connectC.commit();
+                System.out.println("matricula guardada correctamente");
+
+            } catch (SQLException e) {
+                System.out.println("Error al ejecutar la consulta: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MatriculaServiceImplement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void desvincularAlumno(String DNIAlumno, String nombreCurso) {
+        String sql = "DELETE FROM Matricula WHERE DNIAlumno = ? AND nombreCurso = ?";
+        Connection connect = conn.conectarDB();
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setString(1, DNIAlumno);
+            ps.setString(2, nombreCurso);
+            habilitarClavesForaneas(connect);
+            int filasAfectadas = ps.executeUpdate();
+            if (filasAfectadas > 0) {
+                System.out.println("alumno desvinculado correctamente");
+            } else {
+                System.out.println("No se encontro el registro asociado");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al desvincular el alumno");
+            System.out.println("Error: " + e.toString());
+        }
+    }
+
+    @Override
+    public ArrayList<Matricula> buscarMatriculaCurso() {
+        ArrayList<Matricula> listaMatriculas = new ArrayList<>();
+        Connection connect = conn.conectarDB();
+        String sql = "SELECT * FROM Matricula";
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            //connect.commit();
+            while (rs.next()) {
+                LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                LocalDate fechaModificacion = null;
+                if (rs.getString("fechaModificacion") != null) {
+                    fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                LocalDate fechaEliminacion = null;
+                if (rs.getString("fechaEliminacion") != null) {
+                    fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                Matricula matricula = new Matricula(
+                        rs.getInt("idMatricula"),
+                        rs.getString("DNIAlumno"),
+                        fechaCreacion,
+                        fechaModificacion,
+                        fechaEliminacion,
+                        rs.getString("nombreCurso"));
+                listaMatriculas.add(matricula);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al mostrar la matricula");
+            System.out.println("Error: " + e.toString());
+        }
+        return listaMatriculas;
+    }
+
+    @Override
+    public ArrayList<Matricula> buscarMatriculaCurso(String nombreCurso) {
+        ArrayList<Matricula> listaMatriculas = new ArrayList<>();
+        Connection connect = conn.conectarDB();
+        String sql = "SELECT * FROM Matricula WHERE TRIM(nombreCurso) = ?";
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setString(1, nombreCurso);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                LocalDate fechaModificacion = null;
+                if (rs.getString("fechaModificacion") != null) {
+                    fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                LocalDate fechaEliminacion = null;
+                if (rs.getString("fechaEliminacion") != null) {
+                    fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                Matricula matricula = new Matricula(
+                        rs.getInt("idMatricula"),
+                        rs.getString("DNIAlumno"),
+                        fechaCreacion,
+                        fechaModificacion,
+                        fechaEliminacion,
+                        rs.getString("nombreCurso"));
+                listaMatriculas.add(matricula);
+            }
+        } catch (SQLException e) {
+            System.out.println("error al ejecutar la consulta" + e.getMessage());
+            e.printStackTrace();
+        }
+        return listaMatriculas;
+    }
+
+    @Override
+    public ArrayList<Matricula> buscarMatriculaCurso(Alumno alumno) {
+        ArrayList<Matricula> listaMatriculas = new ArrayList<>();
+        Connection connect = conn.conectarDB();
+        String sql = "SELECT * FROM Matricula WHERE TRIM(DNIAlumno) = ?";
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setString(1, alumno.getDni());
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                LocalDate fechaModificacion = null;
+                if (rs.getString("fechaModificacion") != null) {
+                    fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                LocalDate fechaEliminacion = null;
+                if (rs.getString("fechaEliminacion") != null) {
+                    fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                Matricula matricula = new Matricula(
+                        rs.getInt("idMatricula"),
+                        rs.getString("DNIAlumno"),
+                        fechaCreacion,
+                        fechaModificacion,
+                        fechaEliminacion,
+                        rs.getString("nombreCurso"));
+                listaMatriculas.add(matricula);
+            }
+        } catch (SQLException e) {
+            System.out.println("error al ejecutar la consulta" + e.getMessage());
+            e.printStackTrace();
+        }
+        return listaMatriculas;
+    }
+
+    @Override
+    public Matricula buscarMatriculaCurso(Alumno alumno, Curso curso) {
+        Connection connect = conn.conectarDB();
+        String sql = "SELECT * FROM Matricula WHERE TRIM(DNIAlumno) = ? AND TRIM(nombreCurso) = ?";
+        Matricula matricula = new Matricula();
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setString(1, alumno.getDni());
+            ps.setString(2, curso.getNombreCurso());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                LocalDate fechaCreacion = LocalDate.parse(rs.getString("fechaCreacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                LocalDate fechaModificacion = null;
+                if (rs.getString("fechaModificacion") != null) {
+                    fechaModificacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                LocalDate fechaEliminacion = null;
+                if (rs.getString("fechaEliminacion") != null) {
+                    fechaEliminacion = LocalDate.parse(rs.getString("fechaModificacion"), DateTimeFormatter.ofPattern("dd/MM/yy"));
+                }
+                matricula = new Matricula(
+                        rs.getInt("idMatricula"),
+                        rs.getString("DNIAlumno"),
+                        fechaCreacion,
+                        fechaModificacion,
+                        fechaEliminacion,
+                        rs.getString("nombreCurso"));
+            }
+        } catch (SQLException e) {
+            System.out.println("error al ejecutar la consulta" + e.getMessage());
+            e.printStackTrace();
+        }
+        return matricula;
+    }
+
+    private static void habilitarClavesForaneas(Connection conn) throws SQLException {
+        try ( PreparedStatement stmt = conn.prepareStatement("PRAGMA foreign_keys = ON;")) {
+            stmt.execute();
+        }
+    }
+}

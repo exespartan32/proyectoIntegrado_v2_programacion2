@@ -68,16 +68,6 @@ public class AlumnoServiceImplement implements UsuarioInterface<Alumno> {
     }
 
     @Override
-    public ArrayList<Alumno> mostrarRegistro(String data) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void modificarRegistro(int id, Alumno objeto) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
     public ArrayList<Alumno> mostrarRegistro() {
         ArrayList<Alumno> listaAlumnos = new ArrayList<>();
         try ( Connection connectC = conn.conectarDB()) {
@@ -202,11 +192,6 @@ public class AlumnoServiceImplement implements UsuarioInterface<Alumno> {
             System.out.println("ERROR: " + ex.toString());
         }
         return alumno;
-    }
-
-    @Override
-    public Alumno mostrarRegistro(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override

@@ -76,11 +76,6 @@ public class ProfesorServiceImplement implements UsuarioInterface<Profesor> {
     }
 
     @Override
-    public void modificarRegistro(int id, Profesor objeto) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
     public ArrayList<Profesor> mostrarRegistro() {
         ArrayList<Profesor> listaProfesores = new ArrayList<>();
         try ( Connection connectC = conn.conectarDB()) {
@@ -146,16 +141,6 @@ public class ProfesorServiceImplement implements UsuarioInterface<Profesor> {
         }
 
         return listaProfesores;
-    }
-
-    @Override
-    public ArrayList<Profesor> mostrarRegistro(String data) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Profesor mostrarRegistro(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override

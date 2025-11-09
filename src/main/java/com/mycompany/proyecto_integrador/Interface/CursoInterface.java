@@ -5,6 +5,7 @@
 package com.mycompany.proyecto_integrador.Interface;
 
 import com.mycompany.proyecto_integrador.Model.Curso;
+import java.util.ArrayList;
 
 /**
  *
@@ -12,6 +13,17 @@ import com.mycompany.proyecto_integrador.Model.Curso;
  */
 public interface CursoInterface {
 
+    public void nuevoCurso(Curso curso);
+
+    public void modificarCurso(String nombreCurso, Curso curso);
+
+    public void eliminarCurso(String nombreCurso);
+
+    public ArrayList<Curso> buscarCurso();
+
     public Curso buscarCurso(String nombreCurso);
-    
+
+    public Curso buscarCurso(String dniProfesor, int estado);
+
+    public boolean existeCurso(String nombreCurso);
 }

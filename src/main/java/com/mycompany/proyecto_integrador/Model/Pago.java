@@ -4,10 +4,24 @@
  */
 package com.mycompany.proyecto_integrador.Model;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author exequiel
  */
 public class Pago {
+
+    private int idPago;
+    private String dniAlumno;
+    private String nombreCurso;
+    private LocalDate fechaPago;
+    private boolean pagado;
+    private int monto;
+    private int pago;
+    private int saldoAlumno;
+    private String descripcionPago;
+    
+    
     
 }

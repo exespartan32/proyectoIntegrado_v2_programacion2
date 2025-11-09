@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
 package com.mycompany.proyecto_integrador.Interface;
+
 import com.mycompany.proyecto_integrador.Model.*;
 
 import java.util.ArrayList;
@@ -17,15 +18,12 @@ public interface MatriculaInterface {
 
     public void desvincularAlumno(String DNIAlumno, String nombreCurso);
 
-    /// buscar todas las matriculas
     public ArrayList<Matricula> buscarMatriculaCurso();
 
-    /// buscar las matriculas de un curso
     public ArrayList<Matricula> buscarMatriculaCurso(String nombreCurso);
 
-    /// buscar todas las matriculas de un alumno
     public ArrayList<Matricula> buscarMatriculaCurso(Alumno alumno);
 
-    // buscar la matricula del alumno en un curso en especifico
     public Matricula buscarMatriculaCurso(Alumno alumno, Curso curso);
+
 }

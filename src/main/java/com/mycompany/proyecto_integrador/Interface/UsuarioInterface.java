@@ -25,14 +25,8 @@ public interface UsuarioInterface<T> {
 
     public void modificarRegistro(String data, T objeto);
 
-    public void modificarRegistro(int id, T objeto);
-
     public ArrayList<T> mostrarRegistro();
 
-    public ArrayList<T> mostrarRegistro(String data);
-
-    public T mostrarRegistro(int id);
-    
     public T mostrarRegistro(String id, int i);
 
     abstract void habilitarClavesForaneas(Connection conn) throws SQLException;

@@ -16,7 +16,7 @@ public class MainMenu {
 
     private final Alumno_Controller alumnoController = new Alumno_Controller();
     private final Profesor_Controller profesorController = new Profesor_Controller();
-//    private final Curso_Controller cursoController = new Curso_Controller();
+    private final Curso_Controller cursoController = new Curso_Controller();
 //    private final HistorialCuenta_Controller historialController = new HistorialCuenta_Controller();
 //    private final Matricula_Controller matriculaController = new Matricula_Controller();
 //    private final Usuario_Controller usuarioController = new Usuario_Controller();
@@ -34,9 +34,7 @@ public class MainMenu {
             System.out.println("2. Gestionar Profesores");
             System.out.println("3. Gestionar Cursos");
             System.out.println("4. Gestionar Matrículas");
-            System.out.println("5. Gestionar Pagos (Historial Cuentas)");
-            System.out.println("6. Gestionar Usuarios del Sistema");
-            System.out.println("7. Gestionar Precios de Cursos");
+            System.out.println("5. Gestionar Pagos");
             System.out.println("0. Salir");
             System.out.println("========================================");
             System.out.print("Seleccione una opción: ");
@@ -65,12 +63,6 @@ public class MainMenu {
                     break;
                 case 5:
                     menuHistorialCuentas();
-                    break;
-                case 6:
-                    menuUsuarios();
-                    break;
-                case 7:
-                    menuValorCursos();
                     break;
                 case 0:
                     System.out.println("Saliendo del sistema... ¡Hasta luego!");
@@ -119,7 +111,7 @@ public class MainMenu {
                     alumnoController.eliminarAlumno();
                     break;
                 default:
-                    throw new AssertionError();
+                    System.out.println("Opción no válida. Intente de nuevo.");
             }
         }
     }
@@ -160,7 +152,7 @@ public class MainMenu {
                     profesorController.eliminarProfesor();
                     break;
                 default:
-                    throw new AssertionError();
+                    System.out.println("Opción no válida. Intente de nuevo.");
             }
         }
     }
@@ -172,8 +164,9 @@ public class MainMenu {
             System.out.println("1. Nuevo Curso");
             System.out.println("2. Ver Todos los Cursos");
             System.out.println("3. Buscar Curso (por Nombre)");
-            System.out.println("4. Modificar Curso");
-            System.out.println("5. Eliminar Curso");
+            System.out.println("4. Buscar Curso (por Dni de Profesor)");
+            System.out.println("5. Modificar Curso");
+            System.out.println("6. Eliminar Curso");
             System.out.println("0. Volver al Menú Principal");
             System.out.print("Seleccione una opción: ");
 
@@ -184,7 +177,28 @@ public class MainMenu {
                 opcion = -1;
                 continue;
             }
-
+            switch (opcion) {
+                case 1:
+                    cursoController.nuevoCurso();
+                    break;
+                case 2:
+                    cursoController.verTodosLosCursos();
+                    break;
+                case 3:
+                    cursoController.buscarCursoPorNombre();
+                    break;
+                case 4:
+                    cursoController.buscarCursoPorProfesor();
+                    break;
+                case 5:
+                    cursoController.modificarCurso();
+                    break;
+                case 6:
+                    cursoController.eliminarCurso();
+                    break;
+                default:
+                    System.out.println("Opción no válida. Intente de nuevo.");
+            }
         }
     }
 
@@ -207,6 +221,28 @@ public class MainMenu {
                 opcion = -1;
                 continue;
             }
+            switch (opcion) {
+                case 1:
+                    cursoController.nuevoCurso();
+                    break;
+                case 2:
+                    cursoController.verTodosLosCursos();
+                    break;
+                case 3:
+                    cursoController.buscarCursoPorNombre();
+                    break;
+                case 4:
+                    cursoController.buscarCursoPorProfesor();
+                    break;
+                case 5:
+                    cursoController.modificarCurso();
+                    break;
+                case 6:
+                    cursoController.eliminarCurso();
+                    break;
+                default:
+                    System.out.println("Opción no válida. Intente de nuevo.");
+            }
         }
     }
 
@@ -219,53 +255,6 @@ public class MainMenu {
             System.out.println("3. Ver Pagos de un Alumno");
             System.out.println("4. Ver Pagos de un Curso");
             System.out.println("5. Buscar Pago por ID");
-            System.out.println("0. Volver al Menú Principal");
-            System.out.print("Seleccione una opción: ");
-
-            try {
-                opcion = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Error: Ingrese un número válido.");
-                opcion = -1;
-                continue;
-            }
-        }
-    }
-
-    private void menuUsuarios() {
-        int opcion = -1;
-        while (opcion != 0) {
-            System.out.println("\n--- GESTIÓN DE USUARIOS DEL SISTEMA ---");
-            System.out.println("1. Nuevo Usuario");
-            System.out.println("2. Ver Todos los Usuarios");
-            System.out.println("3. Buscar Usuario por ID");
-            System.out.println("4. Buscar Usuario por Nombre de Usuario");
-            System.out.println("5. Modificar Usuario");
-            System.out.println("6. Eliminar Usuario");
-            System.out.println("0. Volver al Menú Principal");
-            System.out.print("Seleccione una opción: ");
-
-            try {
-                opcion = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Error: Ingrese un número válido.");
-                opcion = -1;
-                continue;
-            }
-        }
-    }
-
-    private void menuValorCursos() {
-        int opcion = -1;
-        while (opcion != 0) {
-            System.out.println("\n--- GESTIÓN DE PRECIOS DE CURSOS ---");
-            System.out.println("1. Asignar/Nuevo Precio a Curso");
-            System.out.println("2. Buscar Precio por ID");
-            System.out.println("3. Buscar Precio por Nombre de Curso");
-            System.out.println("4. Buscar Precio de un Curso (Seleccionando)");
-            System.out.println("5. Modificar Precio de un Curso");
-            System.out.println("6. Ver el Precio de Todos los Cursos");
-            System.out.println("7. Eliminar Precio De Curso");
             System.out.println("0. Volver al Menú Principal");
             System.out.print("Seleccione una opción: ");
 
